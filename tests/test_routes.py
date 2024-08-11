@@ -127,7 +127,6 @@ class TestAccountService(TestCase):
     def test_read_an_account(self):
         """ It should find and read an account"""
         account = self._create_accounts(1)[0]
-        print(account.id)
         response = self.client.get(
             f"{BASE_URL}/{account.id}",
             content_type="application/json"
@@ -146,4 +145,26 @@ class TestAccountService(TestCase):
             f"{BASE_URL}/0",
             content_type="application/json"
         )
-        self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)  
+        self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_update_an_account(self):
+        """ It should update an account using an id and payload """
+        account = self._create_accounts(1)[0]
+        # UPDATE THE PRODUCT
+        account.address = "UNKNOWN"
+        response = self.client.put(
+            f"{BASE_URL}/{account.id}",
+            json=account.serialize())
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        updated_account = response.get_json()
+        self.assertEqual(updated_account["address"], "UNKNOWN")
+
+    def test_update_not_found(self):
+        """ It should not update non-existing account """
+        account = self._create_accounts(1)[0]
+        # UPDATE THE PRODUCT ID to non-existing
+        account.address = "UNKNOWN"
+        response = self.client.put(
+            f"{BASE_URL}/0",
+            json=account.serialize())
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
