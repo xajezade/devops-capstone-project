@@ -168,7 +168,7 @@ class TestAccountService(TestCase):
             f"{BASE_URL}/0",
             json=account.serialize())
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
-    
+
     def test_delete_an_account(self):
         """ It should delete an account with an id """
         account = self._create_accounts(1)[0]

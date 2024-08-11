@@ -50,7 +50,7 @@ def create_accounts():
     account.deserialize(request.get_json())
     account.create()
     message = account.serialize()
-    location_url = url_for("get_accounts", account_id=account.id, _external=True) 
+    location_url = url_for("get_accounts", account_id=account.id, _external=True)
     return make_response(
         jsonify(message), status.HTTP_201_CREATED, {"Location": location_url}
     )
@@ -62,7 +62,7 @@ def create_accounts():
 def list_accounts():
     """
     List all the accounts
-    This endpoint will list all the Accounts in the database 
+    This endpoint will list all the Accounts in the database
     """
     app.logger.info("Request to list all the accounts")
     accounts = Account.all()
@@ -79,10 +79,10 @@ def get_accounts(account_id):
     This endpoint will read an Account based the account_id that is requested
     """
     app.logger.info("Request to read an Account with id: %s", account_id)
-        
+
     account = Account.find(account_id)
     if not account:
-        app.logger.error("Account with id [%s] was not found!", account_id) 
+        app.logger.error("Account with id [%s] was not found!", account_id)
         abort(
             status.HTTP_404_NOT_FOUND,
             f"No Account was found with id: {account_id}",
@@ -97,12 +97,12 @@ def get_accounts(account_id):
 def update_accounts(account_id):
     """
     Updates an Account
-    This endpoint will update an Account based the account_id 
+    This endpoint will update an Account based the account_id
     """
     app.logger.info("Request to update an Account with id: %s", account_id)
     account = Account.find(account_id)
     if not account:
-        app.logger.error("Account with id [%s] was not found!", account_id) 
+        app.logger.error("Account with id [%s] was not found!", account_id)
         abort(
             status.HTTP_404_NOT_FOUND,
             f"No Account was found with id: {account_id}",
@@ -110,7 +110,7 @@ def update_accounts(account_id):
     account.deserialize(request.get_json())
     account.update()
     data = account.serialize()
-    return data, status.HTTP_200_OK    
+    return data, status.HTTP_200_OK
 
 ######################################################################
 # DELETE AN ACCOUNT
@@ -119,12 +119,12 @@ def update_accounts(account_id):
 def delete_accounts(account_id):
     """
     deletes an Account
-    This endpoint will deletes an Account based the account_id 
+    This endpoint will deletes an Account based the account_id
     """
     app.logger.info("Request to delete an Account with id: %s", account_id)
     account = Account.find(account_id)
     if not account:
-        app.logger.error("Account with id [%s] was not found!", account_id) 
+        app.logger.error("Account with id [%s] was not found!", account_id)
         abort(
             status.HTTP_404_NOT_FOUND,
             f"No Account was found with id: {account_id}",
